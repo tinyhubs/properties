@@ -9,14 +9,14 @@ import (
 )
 
 type Properties struct {
-    pairs map[string]string
+    Pairs map[string]string
 }
 
 func Load(reader io.Reader) (p *Properties, err error) {
     
     //  创建一个Properties对象
     p = new(Properties)
-    p.pairs = make(map[string]string)
+    p.Pairs = make(map[string]string)
     
     //  创建一个扫描器
     scanner := bufio.NewScanner(reader)
@@ -62,7 +62,7 @@ func Load(reader io.Reader) (p *Properties, err error) {
             value = string(bytes.TrimSpace(line[pos+1+end+1:]))
         }
         
-        p.pairs[key] = value
+        p.Pairs[key] = value
     }
     
     if err = scanner.Err(); nil != err {
@@ -73,12 +73,12 @@ func Load(reader io.Reader) (p *Properties, err error) {
 }
 
 func (p*Properties) Get(key string) (value string, exist bool) {
-    value, exist = p.pairs[key]
+    value, exist = p.Pairs[key]
     return
 }
 
 func (p*Properties) StringDefault(key string, def string) string {
-    value, ok := p.pairs[key]
+    value, ok := p.Pairs[key]
     if ok {
         return value
     }
@@ -87,7 +87,7 @@ func (p*Properties) StringDefault(key string, def string) string {
 }
 
 func (p*Properties) IntDefault(key string, def int64) int64 {
-    value, ok := p.pairs[key]
+    value, ok := p.Pairs[key]
     if ok {
         v, err := strconv.ParseInt(value, 10, 64)
         if nil != err {
@@ -101,7 +101,7 @@ func (p*Properties) IntDefault(key string, def int64) int64 {
 }
 
 func (p*Properties) FloatDefault(key string, def float64) float64 {
-    value, ok := p.pairs[key]
+    value, ok := p.Pairs[key]
     if ok {
         v, err := strconv.ParseFloat(value, 64)
         if nil != err {
@@ -115,7 +115,7 @@ func (p*Properties) FloatDefault(key string, def float64) float64 {
 }
 
 func (p*Properties) BoolDefault(key string, def bool) bool {
-    value, ok := p.pairs[key]
+    value, ok := p.Pairs[key]
     if ok {
         v, err := strconv.ParseBool(value)
         if nil != err {
@@ -129,7 +129,7 @@ func (p*Properties) BoolDefault(key string, def bool) bool {
 }
 
 func (p*Properties) ObjectDefault(key string, def interface{}, f func(k string, v string) (interface{}, error)) interface{} {
-    value, ok := p.pairs[key]
+    value, ok := p.Pairs[key]
     if ok {
         v, err := f(key, value)
         if nil != err {
