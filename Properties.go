@@ -128,6 +128,20 @@ func (p*Properties) BoolDefault(key string, def bool) bool {
     return def
 }
 
+func (p*Properties) ObjectDefault(key string, def interface{}, f func(k string, v string) (interface{}, error)) interface{} {
+    value, ok := p.pairs[key]
+    if ok {
+        v, err := f(key, value)
+        if nil != err {
+            return def
+        }
+        
+        return v
+    }
+    
+    return def
+}
+
 func (p*Properties) String(key string) string {
     return p.StringDefault(key, "")
 }
@@ -142,4 +156,8 @@ func (p*Properties) Float(key string) float64 {
 
 func (p*Properties) Bool(key string) bool {
     return p.BoolDefault(key, false)
+}
+
+func (p*Properties) Object(key string, f func(k string, v string) (interface{}, error)) interface{} {
+    return p.ObjectDefault(key, nil, f)
 }

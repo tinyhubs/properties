@@ -3,6 +3,8 @@ package properties
 import (
     "testing"
     "strings"
+    "fmt"
+    "time"
 )
 
 func Test_String(t *testing.T) {
