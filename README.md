@@ -1,10 +1,10 @@
 # properties for golang
 
-properties是一个go语言版的*.properties文件读取库。
+`*.properties`文件是java里面很常见的配置文件。这里是一个go语言版的*.properties文件读取库。
 
-java中的properties文件使用非常广泛，但golang并没有提供这种格式的文件的读取来，所以，我只得自己封装了一个。
+## go-properties文件格式定义
 
-为了识别简单快速，go的properties的识别格式和java的properties文件并不是等价的。语法格式更加简单，但是我们实际工作中都不会使用超出本类范围的功能。
+为了使得properties文件的识别更加简单快速，go的properties的文件格式和java的properties文件并不是等价的。java的properties文件中很少用的特性这里不支持
 
 golang版本的properties文件的格式定义如下：
 
@@ -58,7 +58,7 @@ golang版本的properties文件的格式定义如下：
 
 ####`properties.Properties`的成员
 
-`Pairs` 一个`map[string][string]`当我们需要注入一些外部的配置项时，可以直接使用该来。
+`Pairs` 这是一个`map[string][string]`类型的成员。当我们需要注入一些外部的配置项时，可以直接使用该来。
 
 #### `properties.Properties`的成员函数：
 
@@ -68,7 +68,7 @@ golang版本的properties文件的格式定义如下：
 - `Bool` 同与`String`类似，只是返回值是`bool`类型的且缺省值是`false`。`Bool`函数会将`1`, `t`, `T`, `true`, `TRUE`, `True`识别为`true`，将`0`, `f`, `F`, `false`, `FALSE`, `False`识别为`false`。
 - `Object` 这个函数提供了一个数据映射能力，可以将找到的value映射为任何类型。
 - `StringDefault`，`IntDefault`、`FloatDefault`、`BoolDefault`、`ObjectDefault` 这几个函数的返回值和前面不带`Default`后缀的函数的行为类似，只是当配置项不存在时或者数据格式错误时，会直接返回参数中的`def`(缺省值)。
-- `Get` 第一个参数返回的是key所对应的value；当配置项不存在时，第二个参数为false。我们可以借助这个函数来判断指定key的配置项是否存在。
+- `Get` 第一个参数返回的是key所对应的value；当配置项不存在时，第二个参数为false。我们可以借助这个函数来判断指定key的配置项是否存在（直接访问`Pairs`也可以判断是否存在，只是不推荐大家这样做）。
 
 
 
