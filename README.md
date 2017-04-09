@@ -37,7 +37,7 @@ golang版本的properties文件的格式定义如下：
     
 - 一行的第一个`=`即使key与value的分隔字符，所以key中不会出现`=`，但value部分可以出现`=`；
 
-    比如，下面这个第一个行的key为`expr`,value是`A-B=C`；而第二行的key是一个`""`(空字符串)，value是`Hello`:
+    比如，下面这个第一个行的key为`expr`,value是`A-B=C`；而第二行的key是一个`""`(空字符串)，value是`Hello`。当然第二种情况并没有实际意义:
     ```
     expr=A-B=C
     =Hello
