@@ -4,7 +4,7 @@
 
 ## go-properties文件格式定义
 
-为了使得properties文件的识别更加简单快速，go的properties的文件格式和java的properties文件并不是等价的。java的properties文件中很少用的特性这里不支持
+为了使得properties文件的识别更加简单快速，go的properties的文件格式和java的properties文件并不是等价的。它将java里面一些很少用到的格式特性都去掉了。
 
 golang版本的properties文件的格式定义如下：
 
