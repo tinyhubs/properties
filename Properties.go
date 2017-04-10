@@ -72,12 +72,12 @@ func Load(reader io.Reader) (p *Properties, err error) {
     return p, nil
 }
 
-func (p*Properties) Get(key string) (value string, exist bool) {
+func (p Properties) Get(key string) (value string, exist bool) {
     value, exist = p.Pairs[key]
     return
 }
 
-func (p*Properties) StringDefault(key string, def string) string {
+func (p Properties) StringDefault(key string, def string) string {
     value, ok := p.Pairs[key]
     if ok {
         return value
@@ -86,7 +86,7 @@ func (p*Properties) StringDefault(key string, def string) string {
     return def
 }
 
-func (p*Properties) IntDefault(key string, def int64) int64 {
+func (p Properties) IntDefault(key string, def int64) int64 {
     value, ok := p.Pairs[key]
     if ok {
         v, err := strconv.ParseInt(value, 10, 64)
@@ -100,7 +100,7 @@ func (p*Properties) IntDefault(key string, def int64) int64 {
     return def
 }
 
-func (p*Properties) FloatDefault(key string, def float64) float64 {
+func (p Properties) FloatDefault(key string, def float64) float64 {
     value, ok := p.Pairs[key]
     if ok {
         v, err := strconv.ParseFloat(value, 64)
@@ -114,7 +114,7 @@ func (p*Properties) FloatDefault(key string, def float64) float64 {
     return def
 }
 
-func (p*Properties) BoolDefault(key string, def bool) bool {
+func (p Properties) BoolDefault(key string, def bool) bool {
     value, ok := p.Pairs[key]
     if ok {
         v, err := strconv.ParseBool(value)
@@ -128,7 +128,7 @@ func (p*Properties) BoolDefault(key string, def bool) bool {
     return def
 }
 
-func (p*Properties) ObjectDefault(key string, def interface{}, f func(k string, v string) (interface{}, error)) interface{} {
+func (p Properties) ObjectDefault(key string, def interface{}, f func(k string, v string) (interface{}, error)) interface{} {
     value, ok := p.Pairs[key]
     if ok {
         v, err := f(key, value)
@@ -142,22 +142,22 @@ func (p*Properties) ObjectDefault(key string, def interface{}, f func(k string, 
     return def
 }
 
-func (p*Properties) String(key string) string {
+func (p Properties) String(key string) string {
     return p.StringDefault(key, "")
 }
 
-func (p*Properties) Int(key string) int64 {
+func (p Properties) Int(key string) int64 {
     return p.IntDefault(key, 0)
 }
 
-func (p*Properties) Float(key string) float64 {
+func (p Properties) Float(key string) float64 {
     return p.FloatDefault(key, 0.0)
 }
 
-func (p*Properties) Bool(key string) bool {
+func (p Properties) Bool(key string) bool {
     return p.BoolDefault(key, false)
 }
 
-func (p*Properties) Object(key string, f func(k string, v string) (interface{}, error)) interface{} {
+func (p Properties) Object(key string, f func(k string, v string) (interface{}, error)) interface{} {
     return p.ObjectDefault(key, nil, f)
 }
