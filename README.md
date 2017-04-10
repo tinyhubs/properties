@@ -70,11 +70,11 @@ golang版本的properties文件的格式定义如下：
 
 ## 接口定义
 
-####全局函数：
+#### 全局函数：
 
 `properties.Load` 生成一个`properties.Properties`对象。
 
-####`properties.Properties`的成员
+#### `properties.Properties`的成员
 
 `Pairs` 这是一个`map[string][string]`类型的成员。当我们需要注入一些外部的配置项时，可以直接使用该来。
 
