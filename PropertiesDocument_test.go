@@ -5,6 +5,7 @@ import (
     "strings"
     "bytes"
     "fmt"
+    "os"
 )
 
 func Test_Load(t *testing.T) {
@@ -15,8 +16,11 @@ func Test_Load(t *testing.T) {
     dd
     ee: r-rt rr
     `
-    
-    p, err := Load(strings.NewReader(s))
+    file, err := os.Open("test1.properties")
+    if nil != err {
+        return
+    }
+    //p, err := Load(strings.NewReader(s))
     if nil != err {
         t.Error("加载失败")
         return
@@ -59,6 +63,22 @@ func Test_Load(t *testing.T) {
         t.Error("Get string failed")
         return
     }
+}
+
+
+func Test_LoadFromFile(t *testing.T) {
+    file, err := os.Open("test1.properties")
+    if nil != err {
+        return
+    }
+    
+    doc, err := Load(file)
+    if nil != err {
+        t.Error("加载失败")
+        return
+    }
+    
+    fmt.Println(doc.String("key"))
 }
 
 func Test_New(t *testing.T) {
