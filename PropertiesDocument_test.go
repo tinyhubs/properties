@@ -16,11 +16,8 @@ func Test_Load(t *testing.T) {
     dd
     ee: r-rt rr
     `
-    file, err := os.Open("test1.properties")
-    if nil != err {
-        return
-    }
-    //p, err := Load(strings.NewReader(s))
+    
+    p, err := Load(strings.NewReader(s))
     if nil != err {
         t.Error("加载失败")
         return
