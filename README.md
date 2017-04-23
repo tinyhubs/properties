@@ -1,4 +1,6 @@
-# properties for golang
+# Overview
+
+//[![Build Status](https://travis-ci.org/dmotylev/goproperties.png)](https://travis-ci.org/dmotylev/goproperties)
 
 `*.properties`文件是java里面很常见的配置文件。这里是一个go语言版的*.properties文件读取库。
 
