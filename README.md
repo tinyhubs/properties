@@ -1,7 +1,7 @@
 # Overview
 
 [![Build Status](https://travis-ci.org/libbylg/properties.svg?branch=master)](https://travis-ci.org/libbylg/properties)
-
+[![GoDoc](https://godoc.org/github.com/libbylg/properties?status.svg)](https://godoc.org/github.com/libbylg/properties)
 
 `*.properties`文件是java里面很常见的配置文件。这里是一个go语言版的*.properties文件读处理库。本库支持properties文件的读取、修改、回写操作。也支持向properties文件中的属性追加、删除注释操作。
 
