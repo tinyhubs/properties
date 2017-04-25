@@ -129,6 +129,10 @@ func Load(reader io.Reader) (p *PropertiesDocument, err error) {
 //  If the item is not exist, the exist is false.
 func (p PropertiesDocument) Get(key string) (value string, exist bool) {
     e, ok := p.props[key]
+    if !ok {
+        return "", ok
+    }
+    
     return e.Value.(*element).value, ok
 }
 
@@ -136,12 +140,13 @@ func (p PropertiesDocument) Get(key string) (value string, exist bool) {
 //  Create a new item if the item of the key is not exist.
 func (p*PropertiesDocument) Set(key string, value string) {
     e, ok := p.props[key]
-    if ok {
-        e.Value.(*element).value = value
+    if !ok {
+        p.props[key] = p.elems.PushBack(&element{typo: '=', key: key, value: value})
         return
     }
     
-    p.props[key] = p.elems.PushBack(&element{typo: '=', key: key, value: value})
+    e.Value.(*element).value = value
+    return 
 }
 
 //  Del Delete the exist item.
