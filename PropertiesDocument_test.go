@@ -80,7 +80,8 @@ func Test_LoadFromFile(t *testing.T) {
 	if nil != err {
 		return
 	}
-
+	defer file.Close()
+	
 	doc, err := Load(file)
 	if nil != err {
 		t.Error("加载失败")
