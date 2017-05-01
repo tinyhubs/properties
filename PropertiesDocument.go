@@ -36,7 +36,7 @@ func New() *PropertiesDocument {
 
 func Save(doc *PropertiesDocument, writer io.Writer) error {
 	var err error
-	
+
 	doc.Accept(func(typo byte, value string, key string) bool {
 		switch typo {
 		case '#', '!', ' ':
@@ -44,57 +44,57 @@ func Save(doc *PropertiesDocument, writer io.Writer) error {
 		case '=', ':':
 			_, err = fmt.Fprintf(writer, "%s%c%s\n", key, typo, value)
 		}
-		
+
 		return nil == err
 	})
-	
+
 	return err
 }
 
 func Load(reader io.Reader) (doc *PropertiesDocument, err error) {
-	
+
 	//  创建一个Properties对象
 	doc = New()
-	
+
 	//  创建一个扫描器
 	scanner := bufio.NewScanner(reader)
 	for scanner.Scan() {
 		//  逐行读取
 		line := scanner.Bytes()
-		
+
 		//  遇到空行
 		if 0 == len(line) {
 			doc.elems.PushBack(&element{typo: ' ', value: string(line)})
 			continue
 		}
-		
+
 		//  找到第一个非空白字符
 		pos := bytes.IndexFunc(line, func(r rune) bool {
 			return !unicode.IsSpace(r)
 		})
-		
+
 		//  遇到空白行
 		if -1 == pos {
 			doc.elems.PushBack(&element{typo: ' ', value: string(line)})
 			continue
 		}
-		
+
 		//  遇到注释行
 		if '#' == line[pos] {
 			doc.elems.PushBack(&element{typo: '#', value: string(line)})
 			continue
 		}
-		
+
 		if '!' == line[pos] {
 			doc.elems.PushBack(&element{typo: '!', value: string(line)})
 			continue
 		}
-		
+
 		//  找到第一个等号的位置
 		end := bytes.IndexFunc(line[pos+1:], func(r rune) bool {
 			return ('=' == r) || (':' == r)
 		})
-		
+
 		//  没有=，说明该配置项只有key
 		key := ""
 		value := ""
@@ -106,10 +106,10 @@ func Load(reader io.Reader) (doc *PropertiesDocument, err error) {
 			key = string(bytes.TrimRightFunc(line[pos:pos+1+end], func(r rune) bool {
 				return unicode.IsSpace(r)
 			}))
-			
+
 			value = string(bytes.TrimSpace(line[pos+1+end+1:]))
 		}
-		
+
 		var typo byte = '='
 		if end > 0 {
 			typo = line[pos+1+end]
@@ -118,11 +118,11 @@ func Load(reader io.Reader) (doc *PropertiesDocument, err error) {
 		listelem := doc.elems.PushBack(elem)
 		doc.props[key] = listelem
 	}
-	
+
 	if err = scanner.Err(); nil != err {
 		return nil, err
 	}
-	
+
 	return doc, nil
 }
 
@@ -133,7 +133,7 @@ func (p PropertiesDocument) Get(key string) (value string, exist bool) {
 	if !ok {
 		return "", ok
 	}
-	
+
 	return e.Value.(*element).value, ok
 }
 
@@ -145,7 +145,7 @@ func (p *PropertiesDocument) Set(key string, value string) {
 		p.props[key] = p.elems.PushBack(&element{typo: '=', key: key, value: value})
 		return
 	}
-	
+
 	e.Value.(*element).value = value
 	return
 }
@@ -157,7 +157,7 @@ func (p *PropertiesDocument) Del(key string) bool {
 	if !ok {
 		return false
 	}
-	
+
 	p.Uncomment(key)
 	p.elems.Remove(e)
 	delete(p.props, key)
@@ -171,19 +171,19 @@ func (p *PropertiesDocument) Comment(key string, comments string) bool {
 	if !ok {
 		return false
 	}
-	
+
 	//  如果所有注释为空
 	if len(comments) <= 0 {
 		p.elems.InsertBefore(&element{typo: '#', value: "#"}, e)
 		return true
 	}
-	
+
 	//  创建一个新的Scanner
 	scanner := bufio.NewScanner(strings.NewReader(comments))
 	for scanner.Scan() {
 		p.elems.InsertBefore(&element{typo: '#', value: "#" + scanner.Text()}, e)
 	}
-	
+
 	return true
 }
 
@@ -194,20 +194,20 @@ func (p *PropertiesDocument) Uncomment(key string) bool {
 	if !ok {
 		return false
 	}
-	
+
 	for item := e.Prev(); nil != item; {
 		del := item
 		item = item.Prev()
-		
+
 		if ('=' == del.Value.(*element).typo) ||
 			(':' == del.Value.(*element).typo) ||
 			(' ' == del.Value.(*element).typo) {
 			break
 		}
-		
+
 		p.elems.Remove(del)
 	}
-	
+
 	return true
 }
 
@@ -249,7 +249,7 @@ func (p PropertiesDocument) StringDefault(key string, def string) string {
 	if ok {
 		return e.Value.(*element).value
 	}
-	
+
 	return def
 }
 
@@ -262,10 +262,10 @@ func (p PropertiesDocument) IntDefault(key string, def int64) int64 {
 		if nil != err {
 			return def
 		}
-		
+
 		return v
 	}
-	
+
 	return def
 }
 
@@ -277,10 +277,10 @@ func (p PropertiesDocument) UintDefault(key string, def uint64) uint64 {
 		if nil != err {
 			return def
 		}
-		
+
 		return v
 	}
-	
+
 	return def
 }
 
@@ -293,10 +293,10 @@ func (p PropertiesDocument) FloatDefault(key string, def float64) float64 {
 		if nil != err {
 			return def
 		}
-		
+
 		return v
 	}
-	
+
 	return def
 }
 
@@ -312,10 +312,10 @@ func (p PropertiesDocument) BoolDefault(key string, def bool) bool {
 		if nil != err {
 			return def
 		}
-		
+
 		return v
 	}
-	
+
 	return def
 }
 
@@ -329,10 +329,10 @@ func (p PropertiesDocument) ObjectDefault(key string, def interface{}, f func(k 
 		if nil != err {
 			return def
 		}
-		
+
 		return v
 	}
-	
+
 	return def
 }
 
