@@ -190,6 +190,7 @@ func Test_Comment_Uncomment(t *testing.T) {
 	expect(t, "对已经存在的key进行注释,返回true", true == exist)
 	buf = bytes.NewBufferString("")
 	err = Save(doc, buf)
+	expect(t, "格式化成功", nil == err)
 	exp3 := "key1=1\n#\nkey 2=2\n"
 	expect(t, "对已经存在的项进行注释", exp3 == buf.String())
 
@@ -199,6 +200,7 @@ func Test_Comment_Uncomment(t *testing.T) {
 
 	buf = bytes.NewBufferString("")
 	err = Save(doc, buf)
+	expect(t, "格式化成功", nil == err)
 	exp4 := "key1=1\nkey 2=2\n"
 	expect(t, "对已经存在的项进行注释", exp4 == buf.String())
 
