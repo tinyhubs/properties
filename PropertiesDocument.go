@@ -22,11 +22,15 @@ type element struct {
 	key   string //  如果是属性行这里表示属性的key
 }
 
+// PropertiesDocument The properties document in memory.
 type PropertiesDocument struct {
 	elems *list.List
 	props map[string]*list.Element
 }
 
+// New is used to create a new and empty properties document.
+// 
+// It's used to generate a new document.
 func New() *PropertiesDocument {
 	doc := new(PropertiesDocument)
 	doc.elems = list.New()
@@ -34,6 +38,8 @@ func New() *PropertiesDocument {
 	return doc
 }
 
+
+// Save is used to save the doc to file or stream.
 func Save(doc *PropertiesDocument, writer io.Writer) error {
 	var err error
 
@@ -51,6 +57,7 @@ func Save(doc *PropertiesDocument, writer io.Writer) error {
 	return err
 }
 
+// Load is used to create the properties document from a file or a stream.
 func Load(reader io.Reader) (doc *PropertiesDocument, err error) {
 
 	//  创建一个Properties对象
@@ -126,8 +133,8 @@ func Load(reader io.Reader) (doc *PropertiesDocument, err error) {
 	return doc, nil
 }
 
-//  Get Retrive the value from PropertiesDocument.
-//  If the item is not exist, the exist is false.
+// Get Retrive the value from PropertiesDocument.
+// If the item is not exist, the exist is false.
 func (p PropertiesDocument) Get(key string) (value string, exist bool) {
 	e, ok := p.props[key]
 	if !ok {
@@ -137,8 +144,8 @@ func (p PropertiesDocument) Get(key string) (value string, exist bool) {
 	return e.Value.(*element).value, ok
 }
 
-//  Set Update the value of the item of the key.
-//  Create a new item if the item of the key is not exist.
+// Set Update the value of the item of the key.
+// Create a new item if the item of the key is not exist.
 func (p *PropertiesDocument) Set(key string, value string) {
 	e, ok := p.props[key]
 	if !ok {
@@ -150,8 +157,8 @@ func (p *PropertiesDocument) Set(key string, value string) {
 	return
 }
 
-//  Del Delete the exist item.
-//  If the item is not exist, return false.
+// Del Delete the exist item.
+// If the item is not exist, return false.
 func (p *PropertiesDocument) Del(key string) bool {
 	e, ok := p.props[key]
 	if !ok {
@@ -164,8 +171,8 @@ func (p *PropertiesDocument) Del(key string) bool {
 	return true
 }
 
-//  Comment Append comments for the special item.
-//  Return false if the special item is not exist.
+// Comment Append comments for the special item.
+// Return false if the special item is not exist.
 func (p *PropertiesDocument) Comment(key string, comments string) bool {
 	e, ok := p.props[key]
 	if !ok {
@@ -187,8 +194,8 @@ func (p *PropertiesDocument) Comment(key string, comments string) bool {
 	return true
 }
 
-//  Uncomment Remove all of the comments for the special item.
-//  Return false if the special item is not exist.
+// Uncomment Remove all of the comments for the special item.
+// Return false if the special item is not exist.
 func (p *PropertiesDocument) Uncomment(key string) bool {
 	e, ok := p.props[key]
 	if !ok {
@@ -211,12 +218,12 @@ func (p *PropertiesDocument) Uncomment(key string) bool {
 	return true
 }
 
-//  Accept Traverse every element of the document, include comment.
-//  The typo parameter special the element type.
-//  If typo is '#' or '!' means current element is a comment.
-//  If typo is ' ' means current element is a empty or a space line.
-//  If typo is '=' or ':' means current element is a key-value pair.
-//  The traverse will be terminated if f return false.
+// Accept Traverse every element of the document, include comment.
+// The typo parameter special the element type.
+// If typo is '#' or '!' means current element is a comment.
+// If typo is ' ' means current element is a empty or a space line.
+// If typo is '=' or ':' means current element is a key-value pair.
+// The traverse will be terminated if f return false.
 func (p PropertiesDocument) Accept(f func(typo byte, value string, key string) bool) {
 	for e := p.elems.Front(); e != nil; e = e.Next() {
 		elem := e.Value.(*element)
@@ -227,8 +234,8 @@ func (p PropertiesDocument) Accept(f func(typo byte, value string, key string) b
 	}
 }
 
-//  Foreach Traverse all of the key-value pairs in the document.
-//  The traverse will be terminated if f return false.
+// Foreach Traverse all of the key-value pairs in the document.
+// The traverse will be terminated if f return false.
 func (p PropertiesDocument) Foreach(f func(value string, key string) bool) {
 	for e := p.elems.Front(); e != nil; e = e.Next() {
 		elem := e.Value.(*element)
@@ -242,8 +249,8 @@ func (p PropertiesDocument) Foreach(f func(value string, key string) bool) {
 	}
 }
 
-//  StringDefault   Retrive the string value by key.
-//  If the element is not exist, the def will be returned.
+// StringDefault   Retrive the string value by key.
+// If the element is not exist, the def will be returned.
 func (p PropertiesDocument) StringDefault(key string, def string) string {
 	e, ok := p.props[key]
 	if ok {
@@ -253,8 +260,8 @@ func (p PropertiesDocument) StringDefault(key string, def string) string {
 	return def
 }
 
-//  IntDefault   Retrive the int64 value by key.
-//  If the element is not exist, the def will be returned.
+// IntDefault   Retrive the int64 value by key.
+// If the element is not exist, the def will be returned.
 func (p PropertiesDocument) IntDefault(key string, def int64) int64 {
 	e, ok := p.props[key]
 	if ok {
@@ -269,7 +276,7 @@ func (p PropertiesDocument) IntDefault(key string, def int64) int64 {
 	return def
 }
 
-//  UintDefault Same as IntDefault, but the return type is uint64.
+// UintDefault Same as IntDefault, but the return type is uint64.
 func (p PropertiesDocument) UintDefault(key string, def uint64) uint64 {
 	e, ok := p.props[key]
 	if ok {
@@ -284,8 +291,8 @@ func (p PropertiesDocument) UintDefault(key string, def uint64) uint64 {
 	return def
 }
 
-//  FloatDefault   Retrive the float64 value by key.
-//  If the element is not exist, the def will be returned.
+// FloatDefault   Retrive the float64 value by key.
+// If the element is not exist, the def will be returned.
 func (p PropertiesDocument) FloatDefault(key string, def float64) float64 {
 	e, ok := p.props[key]
 	if ok {
@@ -300,11 +307,11 @@ func (p PropertiesDocument) FloatDefault(key string, def float64) float64 {
 	return def
 }
 
-//  BoolDefault   Retrive the bool value by key.
-//  If the element is not exist, the def will be returned.
-//  This function mapping "1", "t", "T", "true", "TRUE", "True" as true.
-//  This function mapping "0", "f", "F", "false", "FALSE", "False" as false.
-//  If the element is not exist of can not map to value of bool,the def will be returned.
+// BoolDefault   Retrive the bool value by key.
+// If the element is not exist, the def will be returned.
+// This function mapping "1", "t", "T", "true", "TRUE", "True" as true.
+// This function mapping "0", "f", "F", "false", "FALSE", "False" as false.
+// If the element is not exist of can not map to value of bool,the def will be returned.
 func (p PropertiesDocument) BoolDefault(key string, def bool) bool {
 	e, ok := p.props[key]
 	if ok {
@@ -319,9 +326,9 @@ func (p PropertiesDocument) BoolDefault(key string, def bool) bool {
 	return def
 }
 
-//  ObjectDefault Map the value of the key to any object.
-//  The f is the customized mapping function.
-//  Return def if the element is not exist of f have a error returned.
+// ObjectDefault Map the value of the key to any object.
+// The f is the customized mapping function.
+// Return def if the element is not exist of f have a error returned.
 func (p PropertiesDocument) ObjectDefault(key string, def interface{}, f func(k string, v string) (interface{}, error)) interface{} {
 	e, ok := p.props[key]
 	if ok {
@@ -336,12 +343,12 @@ func (p PropertiesDocument) ObjectDefault(key string, def interface{}, f func(k 
 	return def
 }
 
-//  String Same as StringDefault but the def is ""
+// String Same as StringDefault but the def is ""
 func (p PropertiesDocument) String(key string) string {
 	return p.StringDefault(key, "")
 }
 
-//  Int Same as IntDefault but the def is 0
+// Int Same as IntDefault but the def is 0
 func (p PropertiesDocument) Int(key string) int64 {
 	return p.IntDefault(key, 0)
 }
@@ -350,17 +357,17 @@ func (p PropertiesDocument) Uint(key string) uint64 {
 	return p.UintDefault(key, 0)
 }
 
-//  Float Same as FloatDefault but the def is 0.0
+// Float Same as FloatDefault but the def is 0.0
 func (p PropertiesDocument) Float(key string) float64 {
 	return p.FloatDefault(key, 0.0)
 }
 
-//  Bool Same as BoolDefault but the def is false
+// Bool Same as BoolDefault but the def is false
 func (p PropertiesDocument) Bool(key string) bool {
 	return p.BoolDefault(key, false)
 }
 
-//  Object Same as ObjectDefault but the def is nil
+// Object Same as ObjectDefault but the def is nil
 func (p PropertiesDocument) Object(key string, f func(k string, v string) (interface{}, error)) interface{} {
 	return p.ObjectDefault(key, interface{}(nil), f)
 }
