@@ -30,7 +30,7 @@ type PropertiesDocument struct {
 }
 
 // New is used to create a new and empty properties document.
-// 
+//
 // It's used to generate a new document.
 func New() *PropertiesDocument {
 	doc := new(PropertiesDocument)
@@ -38,7 +38,6 @@ func New() *PropertiesDocument {
 	doc.props = make(map[string]*list.Element)
 	return doc
 }
-
 
 // Save is used to save the doc to file or stream.
 func Save(doc *PropertiesDocument, writer io.Writer) error {
