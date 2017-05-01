@@ -71,7 +71,7 @@ func Load(reader io.Reader) (doc *PropertiesDocument, err error) {
 
 		//  遇到空行
 		if 0 == len(line) {
-			doc.elems.PushBack(&element{typo: ' ', value: string(line)})
+			doc.elems.PushBack(&element{typo: ' ', value: string("")})
 			continue
 		}
 
@@ -82,7 +82,7 @@ func Load(reader io.Reader) (doc *PropertiesDocument, err error) {
 
 		//  遇到空白行
 		if -1 == pos {
-			doc.elems.PushBack(&element{typo: ' ', value: string(line)})
+			doc.elems.PushBack(&element{typo: ' ', value: string("")})
 			continue
 		}
 
