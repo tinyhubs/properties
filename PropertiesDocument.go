@@ -1,3 +1,4 @@
+// Package properties is used to read or write or modify the properties document.
 package properties
 
 import (
@@ -134,6 +135,7 @@ func Load(reader io.Reader) (doc *PropertiesDocument, err error) {
 }
 
 // Get Retrive the value from PropertiesDocument.
+//
 // If the item is not exist, the exist is false.
 func (p PropertiesDocument) Get(key string) (value string, exist bool) {
 	e, ok := p.props[key]
@@ -145,6 +147,7 @@ func (p PropertiesDocument) Get(key string) (value string, exist bool) {
 }
 
 // Set Update the value of the item of the key.
+//
 // Create a new item if the item of the key is not exist.
 func (p *PropertiesDocument) Set(key string, value string) {
 	e, ok := p.props[key]
@@ -158,6 +161,7 @@ func (p *PropertiesDocument) Set(key string, value string) {
 }
 
 // Del Delete the exist item.
+//
 // If the item is not exist, return false.
 func (p *PropertiesDocument) Del(key string) bool {
 	e, ok := p.props[key]
@@ -172,6 +176,7 @@ func (p *PropertiesDocument) Del(key string) bool {
 }
 
 // Comment Append comments for the special item.
+//
 // Return false if the special item is not exist.
 func (p *PropertiesDocument) Comment(key string, comments string) bool {
 	e, ok := p.props[key]
@@ -195,6 +200,7 @@ func (p *PropertiesDocument) Comment(key string, comments string) bool {
 }
 
 // Uncomment Remove all of the comments for the special item.
+//
 // Return false if the special item is not exist.
 func (p *PropertiesDocument) Uncomment(key string) bool {
 	e, ok := p.props[key]
@@ -219,6 +225,7 @@ func (p *PropertiesDocument) Uncomment(key string) bool {
 }
 
 // Accept Traverse every element of the document, include comment.
+//
 // The typo parameter special the element type.
 // If typo is '#' or '!' means current element is a comment.
 // If typo is ' ' means current element is a empty or a space line.
@@ -343,31 +350,34 @@ func (p PropertiesDocument) ObjectDefault(key string, def interface{}, f func(k 
 	return def
 }
 
-// String Same as StringDefault but the def is ""
+// String Same as StringDefault but the def is "".
 func (p PropertiesDocument) String(key string) string {
 	return p.StringDefault(key, "")
 }
 
-// Int Same as IntDefault but the def is 0
+// Int is ame as IntDefault but the def is 0 .
 func (p PropertiesDocument) Int(key string) int64 {
 	return p.IntDefault(key, 0)
 }
 
+// Uint Same as UintDefault but the def is 0 .
 func (p PropertiesDocument) Uint(key string) uint64 {
 	return p.UintDefault(key, 0)
 }
 
-// Float Same as FloatDefault but the def is 0.0
+// Float is same as FloatDefault but the def is 0.0 .
 func (p PropertiesDocument) Float(key string) float64 {
 	return p.FloatDefault(key, 0.0)
 }
 
-// Bool Same as BoolDefault but the def is false
+// Bool is same as BoolDefault but the def is false.
 func (p PropertiesDocument) Bool(key string) bool {
 	return p.BoolDefault(key, false)
 }
 
-// Object Same as ObjectDefault but the def is nil
+// Object is same as ObjectDefault but the def is nil.
+//
+// Notice: If the return value can not be assign to nil, this function will panic/
 func (p PropertiesDocument) Object(key string, f func(k string, v string) (interface{}, error)) interface{} {
 	return p.ObjectDefault(key, interface{}(nil), f)
 }
