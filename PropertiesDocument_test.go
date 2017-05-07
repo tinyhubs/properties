@@ -7,17 +7,16 @@ import (
 	"os"
 	"strings"
 	"testing"
-	"assert/assert"
+	"github.com/tinyhubs/et/assert"
 )
 
 
 func expect(t *testing.T, msg string, result bool) {
-	assert.Truei(t, msg, result)
-	//if result {
-	//	return
-	//}
-	//
-	//t.Error(message)
+	if result {
+		return
+	}
+
+	t.Error(msg)
 }
 
 func Test_Load(t *testing.T) {
