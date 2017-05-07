@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/tinyhubs/et/assert"
 	"os"
 	"strings"
 	"testing"
