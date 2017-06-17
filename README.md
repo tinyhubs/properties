@@ -136,7 +136,7 @@ func (p PropertiesDocument) Get(key string) (value string, exist bool)
 
 `Get`函数会返回两个参数，当对应的key在PropertiesDocument文档中存在时，会返回该key对应的value，且exist的值将为true；如果不存在，exist的值将是false。
 
-我们进场利用`Get`来探测，某个指定key的属性是否在属性文件中定义了。
+我们经常利用`Get`来探测，某个指定key的属性是否在属性文件中定义了。
 
 - **读取并转换**
 读取属性然后转成对应的数据类型是个很常见的任务，所以PropertiesDocument为最常用的几种类型提供了方便的读取并转换的函数。  
